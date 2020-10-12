@@ -51,6 +51,7 @@ const errorHandler = (error: { response: Response }): Response => {
 const request = extend({
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
+  prefix: 'https://www.easy-mock.com/mock/5a7278e28d0c633b9c4adbd7/api'
 });
 
 export default request;

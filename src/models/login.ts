@@ -5,7 +5,7 @@ import { fakeAccountLogin } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
-export interface StateType {
+export interface LoginModelState {
   status?: 'ok' | 'error';
   type?: string;
   currentAuthority?: 'user' | 'guest' | 'admin';
@@ -13,7 +13,7 @@ export interface StateType {
 
 export interface LoginModelType {
   namespace: string;
-  state: StateType;
+  state: LoginModelState;
   effects: {
     login: Effect;
     logout: Effect;

@@ -36,6 +36,17 @@ const routes: Routes = [
     ],
   },
   {
+    path: '/details',
+    component: '../layouts/BlankLayout/index',
+    authority: ['admin', 'user'], 
+    routes: [
+      {
+        path: '/details/order',
+        component: './details/order'
+      }
+    ]
+  },
+  {
     path: '/',
     // component: '../layouts/SecurityLayout',
     routes: [

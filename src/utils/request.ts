@@ -54,4 +54,49 @@ const request = extend({
   prefix: 'https://www.easy-mock.com/mock/5a7278e28d0c633b9c4adbd7/api'
 });
 
-export default request;
+export default request
+
+
+export interface ResponseInterceptorParams {
+  [key: string]: (...rest: any[]) => Promise<any>
+}
+
+/* 拦截器 */
+export const responseInterceptor = (() => {
+  /* 成功返回状态码判断 */
+  const codeProcess = (res: {
+    [key: string]: any
+    code: string
+    msg: string
+  }): any => {
+    if (res.code === '0') {
+      return res
+    }
+    notification.error({
+      message: res.msg || '请求失败',
+      description: `code:${res.code}`
+    })
+    return Promise.reject(res)
+  }
+
+  /* proxy handle */
+  const fnHandle: ProxyHandler<Function> = {
+    apply: (target: Function, context: any, args: any[]) =>
+      (target.apply(context, args) as Promise<any>).then(res => codeProcess(res))
+  }
+
+  /* 存储fn的proxy */
+  const fnMap = new WeakMap()
+
+  return (obj: ResponseInterceptorParams): any => {
+    const proxy = new Proxy(obj, {
+      get(target, key: any) {
+        const cur = target[key]
+        if (typeof cur === 'function')
+          return fnMap.has(cur) ? fnMap.get(cur) : fnMap.set(cur, new Proxy(cur, fnHandle)).get(cur)
+        return cur
+      }
+    })
+    return proxy
+  }
+})()

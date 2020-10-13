@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { ConnectProps, connect } from 'umi'
+import { Space, Button } from 'antd'
 import { ConnectState, OrderModelState, OrderTableItem } from '@/models'
 import { PageContainer } from '@ant-design/pro-layout'
 import ProTable, { ProColumns } from '@ant-design/pro-table'
@@ -43,6 +44,17 @@ const columns: ProColumns<OrderTableItem>[] = [
    }, {
       title: '实付金额',
       dataIndex: 'user_pay',
+   }, {
+      title: '操作',
+      dataIndex: 'operation',
+      render(_, row: OrderTableItem) {
+         const enterDetail = () => {
+            window.open(`/details/order?order=${row.order_sn}`, '_blank')
+         }
+         return (
+            <Button onClick={enterDetail}>详情</Button>
+         )
+      }
    }
 ]
 
@@ -65,6 +77,36 @@ const Order: React.FC<OrderProps> = props => {
             columns={columns}
             pagination={pagination}
             dataSource={orderData.item_list}
+            headerTitle="批量操作"
+            rowSelection={{}}
+            tableAlertRender={({ selectedRowKeys, selectedRows, onCleanSelected }) => {
+               return (
+                  <Space size={24}>
+                     <span>
+                        已选 {selectedRowKeys.length} 项
+                      <a style={{ marginLeft: 8 }} onClick={onCleanSelected}>
+                           取消选择
+                      </a>
+                     </span>
+                     <span>{`容器数量: ${selectedRows.reduce(
+                        (pre) => pre,
+                        0,
+                     )} 个`}</span>
+                     <span>{`调用量: ${selectedRows.reduce(
+                        (pre) => pre,
+                        0,
+                     )} 次`}</span>
+                  </Space>
+               )
+            }}
+            tableAlertOptionRender={() => {
+               return (
+                  <Space>
+                     <a>批量删除</a>
+                     <a>导出数据</a>
+                  </Space>
+               );
+            }}
          />
       </PageContainer>
    )

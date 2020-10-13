@@ -26,7 +26,7 @@ export default defineConfig({
     ie: 11,
   },
   // umi routes: https://umijs.org/docs/routing
-  routes,
+  routes: routes as any,
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     // ...darkTheme,
@@ -39,4 +39,4 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
-});
+})

@@ -1,6 +1,7 @@
 import { Reducer, Effect } from 'umi'
 import cityRequset from '@/services/city'
 import { message } from 'antd'
+import { addKey } from '@/utils/table'
 
 export interface CityModelType {
    namespace: 'city'
@@ -53,6 +54,7 @@ const Model: CityModelType = {
    effects: {
       *getList(_, { put }) {
          const res: CityModelState = yield cityRequset.getList()
+         res.item_list = addKey(res.item_list)
          yield put({
             type: 'onGetListChangeState',
             payload: res

@@ -51,7 +51,7 @@ const Model: OrderModelType = {
             type: 'onGetListChangeState',
             payload: res
          })
-      }
+      },
    },
    reducers: {
       onGetListChangeState(state, { payload }) {
@@ -59,7 +59,7 @@ const Model: OrderModelType = {
             ...state,
             ...payload
          }
-      }
+      },
    }
 }
 

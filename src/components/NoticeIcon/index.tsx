@@ -55,7 +55,7 @@ const NoticeIcon: React.FC<NoticeIconProps> & {
       viewMoreText,
     } = props;
     if (!children) {
-      return null;
+      return <></>;
     }
     const panes: React.ReactNode[] = [];
     React.Children.forEach(children, (child: React.ReactElement<NoticeIconTabProps>): void => {
